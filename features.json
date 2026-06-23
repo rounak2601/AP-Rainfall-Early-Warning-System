@@ -1,0 +1,1 @@
+["centroid_lat", "centroid_lon", "year", "month", "day", "dayofyear", "rain_lag1", "rain_lag7", "rain_rolling7", "humidity", "temp", "pressure", "wind", "year_factor", "monsoon_intensity", "monsoon_day"]

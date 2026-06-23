@@ -1,0 +1,22 @@
+﻿# Large data files
+IMD_AP_Historical Rain Fall/
+*.csv
+rainfall.db
+
+# Python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+*.ipynb
+*.pkl
+*.db
+
+
+# Environment
+.env
+venv/
+.venv/
+
+# OS
+.DS_Store
+Thumbs.db

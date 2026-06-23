@@ -1,0 +1,102 @@
+import streamlit as st
+import pandas as pd
+import numpy as np
+import pickle
+import geopandas as gpd
+from shapely.geometry import Point
+
+# ── Page config ──────────────────────────────────────────────
+st.set_page_config(page_title="AP Rainfall Predictor", layout="wide")
+st.title("Andhra Pradesh Rainfall Prediction")
+st.markdown("Predict rainfall and find affected canals & embankments")
+
+# ── Load models ───────────────────────────────────────────────
+@st.cache_resource
+def load_models():
+    with open('reg_model.pkl', 'rb') as f:
+        reg = pickle.load(f)
+    with open('clf_model.pkl', 'rb') as f:
+        clf = pickle.load(f)
+    return reg, clf
+
+@st.cache_resource
+def load_shapefiles():
+    canals      = gpd.read_file('Canals.shp')
+    embankments = gpd.read_file('Embankments.shp')
+    canals      = canals.to_crs("EPSG:4326")
+    embankments = embankments.to_crs("EPSG:4326")
+    return canals, embankments
+
+reg_model, clf_model = load_models()
+canals, embankments  = load_shapefiles()
+
+# ── Sidebar inputs ────────────────────────────────────────────
+st.sidebar.header("Enter Prediction Details")
+
+lat       = st.sidebar.number_input("Latitude",  min_value=12.0, max_value=20.0, value=16.50, step=0.01)
+lon       = st.sidebar.number_input("Longitude", min_value=76.0, max_value=85.0, value=80.64, step=0.01)
+date_input = st.sidebar.date_input("Select Date", value=pd.Timestamp("2025-08-15"))
+threshold  = st.sidebar.slider("High Rainfall Threshold (mm)", 10, 200, 50)
+
+predict_btn = st.sidebar.button("Predict", type="primary")
+
+# ── Prediction ────────────────────────────────────────────────
+if predict_btn:
+    date = pd.Timestamp(date_input)
+
+    sample = pd.DataFrame([{
+        'centroid_lat' : lat,
+        'centroid_lon' : lon,
+        'year'         : date.year,
+        'month'        : date.month,
+        'day'          : date.day,
+        'dayofyear'    : date.dayofyear,
+        'rain_lag1'    : 5.0,
+        'rain_lag7'    : 5.0,
+        'rain_rolling7': 5.0
+    }])
+
+    amount    = max(0, reg_model.predict(sample)[0])
+    will_rain = clf_model.predict(sample)[0]
+
+    # ── Result cards ─────────────────────────────────────────
+    st.subheader("Prediction Result")
+    col1, col2, col3 = st.columns(3)
+
+    col1.metric("Will it rain?", "YES" if will_rain else "NO")
+    col2.metric("Expected Rainfall", f"{amount:.1f} mm")
+    col3.metric("Date", date.strftime("%d %b %Y"))
+
+    # ── Affected infrastructure ───────────────────────────────
+    st.subheader("Affected Infrastructure")
+
+    if amount >= threshold:
+        point  = Point(lon, lat)
+        buffer = point.buffer(0.09)  # ~10km
+
+        gdf_point = gpd.GeoDataFrame(
+            [{'predicted_mm': amount}],
+            geometry=[buffer],
+            crs="EPSG:4326"
+        )
+
+        affected_canals      = gpd.sjoin(canals,      gdf_point, how='inner', predicate='intersects')
+        affected_embankments = gpd.sjoin(embankments, gdf_point, how='inner', predicate='intersects')
+
+        col4, col5 = st.columns(2)
+        col4.metric("Affected Canals",      len(affected_canals))
+        col5.metric("Affected Embankments", len(affected_embankments))
+
+        if len(affected_canals) > 0:
+            st.write("Canals at risk:")
+            st.dataframe(affected_canals.drop(columns='geometry').head(20))
+
+        if len(affected_embankments) > 0:
+            st.write("Embankments at risk:")
+            st.dataframe(affected_embankments.drop(columns='geometry').head(20))
+    else:
+        st.info(f"Predicted rainfall ({amount:.1f} mm) is below threshold ({threshold} mm). No infrastructure at high risk.")
+
+    # ── Map ───────────────────────────────────────────────────
+    st.subheader("Location Map")
+    st.map(pd.DataFrame({'lat': [lat], 'lon': [lon]}))
