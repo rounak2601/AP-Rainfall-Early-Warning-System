@@ -159,7 +159,7 @@ Physical Meteorology Gate
 
 ---
 
-## 🗺 GIS Data
+## GIS Data
 
 | File | Description |
 |------|-------------|
@@ -265,10 +265,10 @@ Open `http://localhost:8501` in your browser.
 
 | Tab | Description |
 |-----|-------------|
-| 🎯 Predict & Alert | Select village, run prediction, see confidence analysis |
-| 🗺 Live Map | Color-coded risk map across all AP villages |
-| 📊 Analytics | District rainfall charts, risk distribution, history |
-| 🔔 Alert History | Log of all HIGH and EXTREME alerts triggered |
+| Predict & Alert | Select village, run prediction, see confidence analysis |
+| Live Map | Color-coded risk map across all AP villages |
+| Analytics | District rainfall charts, risk distribution, history |
+| Alert History | Log of all HIGH and EXTREME alerts triggered |
 
 ---
 
