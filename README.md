@@ -1,4 +1,4 @@
-# 🌧 AP Rainfall Early Warning System
+# AP Rainfall Early Warning System
 
 [![Python](https://img.shields.io/badge/Python-3.11-blue)](https://python.org)
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.x-red)](https://streamlit.io)
@@ -9,13 +9,13 @@ A production-level monsoon rainfall early warning system for Andhra Pradesh that
 
 ---
 
-## 🎯 Problem Statement
+## Problem Statement
 
 Andhra Pradesh faces severe annual flooding during monsoon season (June–October), causing damage to irrigation canals, embankments, and thousands of villages. Existing systems lack village-level granularity and real-time alerting. This system addresses that gap by predicting daily rainfall for 15,589 villages and identifying which canals and embankments are at flood risk.
 
 ---
 
-## 🚀 Key Features
+## Key Features
 
 - **92.2% prediction accuracy** — XGBoost + Random Forest ensemble trained on 9.5M records
 - **Village-level granularity** — covers all 15,589 villages across all AP districts
@@ -30,7 +30,7 @@ Andhra Pradesh faces severe annual flooding during monsoon season (June–Octobe
 
 ---
 
-## 🏗 System Architecture
+## System Architecture
 ┌─────────────────────────────────────────────────────────┐
 
 │                    Streamlit Dashboard                   │
@@ -87,7 +87,7 @@ Andhra Pradesh faces severe annual flooding during monsoon season (June–Octobe
 
 ---
 
-## 📊 Model Performance
+## Model Performance
 
 | Metric | V1 (Baseline) | V2 (+ Weather) | V3 (+ ENSO) |
 |--------|--------------|----------------|-------------|
@@ -98,7 +98,7 @@ Andhra Pradesh faces severe annual flooding during monsoon season (June–Octobe
 
 ---
 
-## 🧠 ML Pipeline
+## ML Pipeline
 Raw Data (9.5M rows)
 
 │
@@ -170,7 +170,7 @@ Used for spatial join to identify infrastructure within 10km of predicted high-r
 
 ---
 
-## 🛠 Tech Stack
+## Tech Stack
 
 | Category | Technology |
 |----------|------------|
@@ -186,46 +186,30 @@ Used for spatial join to identify infrastructure within 10km of predicted high-r
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 Rain_prediction/
 
 ├── app.py                    # Main Streamlit application
-
 ├── reg_model.pkl             # XGBoost rainfall amount model
-
 ├── clf_model.pkl             # Random Forest rain/no-rain classifier
-
 ├── village_predictions.csv   # Precomputed village predictions
-
 ├── features.json             # Feature list for model inference
-
 ├── rainfall.db               # SQLite predictions and alerts database
-
 ├── Canals.shp                # Canal network shapefile
-
 ├── Canals.dbf                # Canal attributes
-
 ├── Canals.shx                # Canal index
-
 ├── Canals.prj                # Canal projection
-
 ├── Embankments.shp           # Embankment network shapefile
-
 ├── Embankments.dbf           # Embankment attributes
-
 ├── Embankments.shx           # Embankment index
-
 ├── Embankments.prj           # Embankment projection
-
 ├── requirements.txt          # Python dependencies
-
 ├── .gitignore                # Excluded files
-
 └── README.md                 # This file
 
 ---
 
-## ⚙️ Setup and Installation
+## Setup and Installation
 
 ### Prerequisites
 - Python 3.11+
@@ -261,7 +245,7 @@ Open `http://localhost:8501` in your browser.
 
 ---
 
-## 📱 App Screenshots
+## App Screenshots
 
 | Tab | Description |
 |-----|-------------|
@@ -272,7 +256,7 @@ Open `http://localhost:8501` in your browser.
 
 ---
 
-## 🔬 Confidence Analysis System
+## Confidence Analysis System
 
 The system uses multiple independent signals to verify predictions:
 
@@ -293,7 +277,7 @@ The system uses multiple independent signals to verify predictions:
 
 ---
 
-## ⚠️ Known Limitations
+## Known Limitations
 
 1. **Monsoon-only training** — model trained on Jun-Oct data. Non-monsoon predictions use seasonal norms.
 2. **Historical patterns** — cannot predict truly unseasonal events (cyclones, western disturbances).
@@ -302,7 +286,7 @@ The system uses multiple independent signals to verify predictions:
 
 ---
 
-## 🗺 Future Enhancements (Phase 2)
+## Future Enhancements (Phase 2)
 
 - [ ] Real-time IMD rain gauge API integration for accurate lag features
 - [ ] Cyclone track integration for surprise event detection
@@ -313,7 +297,7 @@ The system uses multiple independent signals to verify predictions:
 
 ---
 
-## 👤 Author
+## Author
 
 **Rounak**
 - GitHub: [rounak2601](https://github.com/rounak2601)
@@ -321,13 +305,13 @@ The system uses multiple independent signals to verify predictions:
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License.
 
 ---
 
-## 🙏 Acknowledgements
+## Acknowledgements
 
 - India Meteorological Department (IMD) for historical rainfall data
 - OpenWeatherMap for live weather and NWP forecast API
