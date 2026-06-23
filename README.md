@@ -190,21 +190,37 @@ Used for spatial join to identify infrastructure within 10km of predicted high-r
 Rain_prediction/
 
 ├── app.py                    # Main Streamlit application
+
 ├── reg_model.pkl             # XGBoost rainfall amount model
+
 ├── clf_model.pkl             # Random Forest rain/no-rain classifier
+
 ├── village_predictions.csv   # Precomputed village predictions
+
 ├── features.json             # Feature list for model inference
+
 ├── rainfall.db               # SQLite predictions and alerts database
+
 ├── Canals.shp                # Canal network shapefile
+
 ├── Canals.dbf                # Canal attributes
+
 ├── Canals.shx                # Canal index
+
 ├── Canals.prj                # Canal projection
+
 ├── Embankments.shp           # Embankment network shapefile
+
 ├── Embankments.dbf           # Embankment attributes
+
 ├── Embankments.shx           # Embankment index
+
 ├── Embankments.prj           # Embankment projection
+
 ├── requirements.txt          # Python dependencies
+
 ├── .gitignore                # Excluded files
+
 └── README.md                 # This file
 
 ---
